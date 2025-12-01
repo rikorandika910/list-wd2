@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PejuangKasino: Pakar Kasino Online</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1b1f;
+            color: #898a92;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 450px;
+            margin: 20px auto;
+            background: #25262b;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0px;
+            margin: 20px 0;
+        }
+        .buttons button {
+            background-color: #25262b;
+            color: #acbec1;
+            border: none;
+            padding: 10px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
+            max-width: 122px;
+            font-weight: bold;
+            border: #121212 solid 3px;        }
+        .buttons button.active {
+            background-color: #184d39;
+        }
+        select {
+            background-color: #121212;
+            color: #acbec1;
+            border: none;
+            border-radius: 7px;
+            padding: 10px;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+        .status {
+            color: #43c27e;
+            text-align: right;
+        }
+        .amount {
+            color: #adb1bb;
+            text-align: center;
+            font-weight: bold;
+        }
+        .time {
+            color: #9ea1ac;
+        }
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .buttons button {
+                flex: none;
+                width: 150%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="color: white; background-color: #25262b; background-size: cover;">
+        <p style="text-align: left; padding: 10px 25px; font-weight: bold; font-style: italic;"><span src="glyphicon glyphicon-chevron-left" alt="">< Transaksi</p>
+    </div>
+    <div class="buttons">
+        <button>Deposit</button>
+        <button class="active" style="color: #acbec1">Withdraw</button>
+        <button>Semua</button>
+    </div>
+    <select>
+        <option>Semua</option>
+    </select>
+    <div class="container">
+        <table>
+            <thead>
+                <tr style="color: #888c95;">
+                    <th>Waktu</th>
+                    <th style="text-align: center;">Jumlah (Rp)</th>
+                    <th style="text-align: right;">State</th>
+                </tr>
+            </thead>
+            <tbody id="transaction-body"></tbody>
+        </table>
+    </div>
+    <script>
+        function generateTransactions() {
+            let now = new Date();
+            let timeIntervals = [0, 60, 180, 360, 720, 850, 1000, 1100];
+            let tbody = document.getElementById("transaction-body");
+            let transactions = [];
+
+            for (let i = 0; i < timeIntervals.length; i++) {
+                let transactionTime = new Date(now.getTime() - timeIntervals[i] * 60000);
+                let formattedTime = transactionTime.toLocaleString("id-ID", {
+                    year: 'numeric', month: '2-digit', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                });
+                let [date, time] = formattedTime.split(' ');
+                let amount = (Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000).toLocaleString("id-ID");
+                transactions.push(`<tr><td>${date}<br>${time}</td><td class='amount'>${amount}</td><td class='status'>Berhasil<span style="color: #898a92;"> ></td></tr>`);
+            }
+            tbody.innerHTML = transactions.join("\n");
+        }
+        generateTransactions();
+    </script>
+</body>
+</html>

@@ -109,38 +109,57 @@
             <tbody id="transaction-body"></tbody>
         </table>
     </div>
-    <script>
-        function generateTransactions() {
-            let now = new Date();
-            let tbody = document.getElementById("transaction-body");
-            let transactions = [];
+<script>
+function generateTransactions() {
+    let now = new Date();
+    let tbody = document.getElementById("transaction-body");
+    let transactions = [];
+    let timeList = [];
 
-
+    // 1. Generate 8 waktu acak
     for (let i = 0; i < 8; i++) {
-
         // Selisih waktu acak 10 detik - 3 jam
         let randomDiff = Math.floor(Math.random() * (3 * 3600)) + 10;
-
         let transactionTime = new Date(now.getTime() - randomDiff * 1000);
-                let formattedTime = transactionTime.toLocaleString("id-ID", {
-                    year: 'numeric', month: '2-digit', day: '2-digit',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-                });
-                let [date, time] = formattedTime.split(' ');
-                let rawAmount = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
 
-                // Membulatkan 3 digit terakhir menjadi 000
-                    let roundedAmount = Math.round(rawAmount / 1000) * 1000;
+        // Simpan waktu ke array untuk di-sort nanti
+        timeList.push(transactionTime);
+    }
 
-                    let amount = roundedAmount.toLocaleString("id-ID");
+    // 2. Sort waktu terbaru → terlama
+    timeList.sort((a, b) => b - a);
 
-                transactions.push(`<tr><td>${date}<br>${time}</td><td class='amount'>${amount}</td><td class='status'>Berhasil<span style="color: #898a92;"> ></td></tr>`);
-            }
-            tbody.innerHTML = transactions.join("\n");
-        }
-        generateTransactions();
-    </script>
+    // 3. Generate row berdasarkan daftar waktu yang sudah disort
+    for (let t of timeList) {
+        let formattedTime = t.toLocaleString("id-ID", {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+        });
+
+        let [date, time] = formattedTime.split(' ');
+
+        // Nominal acak
+        let rawAmount = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
+        let roundedAmount = Math.round(rawAmount / 1000) * 1000;
+        let amount = roundedAmount.toLocaleString("id-ID");
+
+        transactions.push(`
+            <tr>
+                <td>${date}<br>${time}</td>
+                <td class='amount'>${amount}</td>
+                <td class='status'>Berhasil<span style="color: #898a92;"> ></span></td>
+            </tr>
+        `);
+    }
+
+    tbody.innerHTML = transactions.join("\n");
+}
+
+generateTransactions();
+</script>
+
 </body>
 </html>
+
 
 

@@ -116,29 +116,35 @@ function generateTransactions() {
     let transactions = [];
     let timeList = [];
 
-    // 1. Generate 8 waktu acak
-    for (let i = 0; i < 8; i++) {
-        // Selisih waktu acak 10 detik - 3 jam
-        let randomDiff = Math.floor(Math.random() * (3 * 3600)) + 10;
-        let transactionTime = new Date(now.getTime() - randomDiff * 1000);
-
-        // Simpan waktu ke array untuk di-sort nanti
-        timeList.push(transactionTime);
+    // --- 1. Buat 3 transaksi untuk HARI INI ---
+    for (let i = 0; i < 3; i++) {
+        timeList.push(randomTimeFromDay(now, 0)); // 0 = hari ini
     }
 
-    // 2. Sort waktu terbaru → terlama
+    // --- 2. Buat 4 transaksi untuk KEMARIN ---
+    for (let i = 0; i < 4; i++) {
+        timeList.push(randomTimeFromDay(now, 1)); // 1 = kemarin
+    }
+
+    // --- 3. Buat 1 transaksi untuk KEMARIN LUSA ---
+    timeList.push(randomTimeFromDay(now, 2)); // 2 = kemarin lusa
+
+    // --- 4. Sort waktu terbaru → terlama ---
     timeList.sort((a, b) => b - a);
 
-    // 3. Generate row berdasarkan daftar waktu yang sudah disort
+    // --- 5. Generate tabel ---
     for (let t of timeList) {
+
+        // Format Waktu
         let formattedTime = t.toLocaleString("id-ID", {
             year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false
         });
 
         let [date, time] = formattedTime.split(' ');
 
-        // Nominal acak
+        // Nominal acak dibulatkan ke ribuan
         let rawAmount = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
         let roundedAmount = Math.round(rawAmount / 1000) * 1000;
         let amount = roundedAmount.toLocaleString("id-ID");
@@ -155,11 +161,29 @@ function generateTransactions() {
     tbody.innerHTML = transactions.join("\n");
 }
 
+// --------------------------------
+// Fungsi untuk membuat waktu acak
+// --------------------------------
+function randomTimeFromDay(now, dayOffset) {
+    let d = new Date(now);
+    d.setDate(now.getDate() - dayOffset); // geser hari (hari ini / kemarin / kemarin lusa)
+
+    // buat jam, menit, detik acak
+    d.setHours(
+        Math.floor(Math.random() * 24),      // jam 0–23
+        Math.floor(Math.random() * 60),      // menit 0–59
+        Math.floor(Math.random() * 60)       // detik 0–59
+    );
+    return d;
+}
+
 generateTransactions();
 </script>
 
+
 </body>
 </html>
+
 
 
 

@@ -112,12 +112,16 @@
     <script>
         function generateTransactions() {
             let now = new Date();
-            let timeIntervals = [0, 60, 180, 360, 720, 850, 1000, 1100];
             let tbody = document.getElementById("transaction-body");
             let transactions = [];
 
-            for (let i = 0; i < timeIntervals.length; i++) {
-                let transactionTime = new Date(now.getTime() - timeIntervals[i] * 60000);
+
+    for (let i = 0; i < 8; i++) {
+
+        // Selisih waktu acak 10 detik - 3 jam
+        let randomDiff = Math.floor(Math.random() * (3 * 3600)) + 10;
+
+        let transactionTime = new Date(now.getTime() - randomDiff * 1000);
                 let formattedTime = transactionTime.toLocaleString("id-ID", {
                     year: 'numeric', month: '2-digit', day: '2-digit',
                     hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
@@ -138,4 +142,5 @@
     </script>
 </body>
 </html>
+
 

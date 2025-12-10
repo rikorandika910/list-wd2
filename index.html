@@ -123,7 +123,13 @@
                     hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
                 });
                 let [date, time] = formattedTime.split(' ');
-                let amount = (Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000).toLocaleString("id-ID");
+                let rawAmount = Math.floor(Math.random() * (2000000 - 500000 + 1)) + 500000;
+
+                // Membulatkan 3 digit terakhir menjadi 000
+                    let roundedAmount = Math.round(rawAmount / 1000) * 1000;
+
+                    let amount = roundedAmount.toLocaleString("id-ID");
+
                 transactions.push(`<tr><td>${date}<br>${time}</td><td class='amount'>${amount}</td><td class='status'>Berhasil<span style="color: #898a92;"> ></td></tr>`);
             }
             tbody.innerHTML = transactions.join("\n");
@@ -132,3 +138,4 @@
     </script>
 </body>
 </html>
+
